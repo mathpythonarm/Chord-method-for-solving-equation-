@@ -1,0 +1,46 @@
+\documentclass{report}
+\usepackage{graphicx} % Required for inserting images
+\usepackage{amsfonts, amsmath, amssymb, amsthm}
+\usepackage{graphicx}
+\newcommand{\R}{\mathbb{R}}
+%cv for column vector
+\newcommand{\cv}[2]{\begin{bmatrix}
+    #1\\ 
+    #2
+    \end{bmatrix}}
+%M 2*2 matrix 
+\newcommand{\M}[4]{\begin{bmatrix}
+   #1 & #2\\ 
+   #3 & #4
+   \end{bmatrix}}
+
+\title{Numerical Methods}
+
+\author{Armen Hayrapetian}
+\date{January 2024}
+
+\begin{document}
+
+\maketitle{\Large{Reflection About a Line}}
+
+Suppose there are given a point $A=\cv{x_0}{y_0}$ and line $l: y = ax+b$. Now we want 
+to reflex point $A$ about line $l$ and get the point $A'$. 
+For this first use a transformation to transform line to origin 
+$$T \cv{x}{y}= \cv{x}{y-b}$$
+then rotate the line to fix it on $x-axis$, by usnig rotate matrix 
+$$R_\theta = \M{cos \theta} {-sin \theta} {sin \theta}{cos \theta} $$
+Since the first rotate is clockwise use $R_{-\alpha}$ where $\alpha= arctan(a)$
+then use reflex matrix about $x-axis$ called $X_r=\M{1}{0}{0}{-1}$,$$X_r \cdot \cv{x}{y}= \cv{x}{-y}$$ 
+and finally $R_{\alpha}$, then shift the inverse of the transformation.
+$$\cv{x'}{y'}=R_{\alpha} \cdot X_r \cdot R_{-\alpha}(\cv{x}{y}+\cv{0}{-b}) + \cv{0}{b}$$
+$$\cv{x'}{y'}=R_{\alpha} \cdot X_r 
+\cdot \M{cos \alpha} {sin \alpha} {-sin \alpha}{cos \alpha}\cdot \cv{x}{y-b}+ \cv{0}{b}$$
+$$\cv{x'}{y'}=\cv{xcos^2\alpha+(y-b)sin \alpha cos \alpha -xsin^2\alpha+(y-b)sin \alpha cos \alpha}
+{xsin \alpha cos \alpha +(y-b)sin^2 \alpha +xsin \alpha cos \alpha -(y-b)cos^2 \alpha }+\cv{0}{b}$$
+% \tableofcontents
+$$\cv{x'}{y'}=\cv{x cos2 \alpha +(y-b) sin 2 \alpha}{x sin2 \alpha -(y-b) cos 2 \alpha}+\cv{0}{b}$$
+$$\cv{x'}{y'}= \M{cos2 \alpha}{sin2 \alpha}{sin2 \alpha}{- cos2 \alpha} \cdot \cv{x}{y-b}+\cv{0}{b}$$
+Express $sin2 \alpha, cos 2 \alpha$ by $tan \alpha$
+$$cos 2\alpha = \frac{1-a^2}{1+a^2}, \text{ } sin 2 \alpha = \frac{2a}{1+a^2}$$
+$$\cv{x'}{y'}= \cv{x \frac{1-a^2}{1+a^2}+(y-b) \frac{2a}{1+a^2}}{ x\frac{2a}{1+a^2}+(y-b) \frac{a^2-1}{1+a^2}+b}$$
+\end{document}
